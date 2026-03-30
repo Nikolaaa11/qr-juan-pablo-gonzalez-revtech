@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Juan Pablo González | RevTech</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0a14;
+    --card: #14112a;
+    --accent: #8b5cf6;
+    --accent-dim: rgba(139, 92, 246, 0.12);
+    --accent-glow: rgba(139, 92, 246, 0.25);
+    --text: #e8edf5;
+    --text-dim: #8896ab;
+    --text-muted: #4a5568;
+    --border: rgba(255,255,255,0.06);
+    --danger: #ef4444;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+  .bg-glow {
+    position:fixed; top:-30%; left:-20%; width:140%; height:80%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 30%, rgba(6,182,212,0.03) 0%, transparent 50%);
+    pointer-events:none; z-index:0;
+  }
+  .container { position:relative; z-index:1; max-width:420px; margin:0 auto; padding:0 20px 40px; }
+  .header { text-align:center; padding:48px 0 24px; }
+  .avatar {
+    width:90px; height:90px; border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),#6d28d9);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 16px; box-shadow:0 0 40px var(--accent-glow);
+    font-family:'Playfair Display',serif; font-size:32px; font-weight:700; color:white;
+    animation:pulse-glow 3s ease-in-out infinite;
+  }
+  @keyframes pulse-glow { 0%,100%{box-shadow:0 0 40px var(--accent-glow);}50%{box-shadow:0 0 60px rgba(139,92,246,0.35);} }
+  .header h1 { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; letter-spacing:-0.5px; margin-bottom:4px; }
+  .header .role { font-size:13px; color:var(--accent); font-weight:500; margin-bottom:4px; }
+  .header .company { font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:2px; }
+  .header .tagline { font-size:13px; color:var(--text-dim); line-height:1.5; max-width:320px; margin:12px auto 0; }
+  .lang-toggle { display:flex; justify-content:center; gap:8px; margin:20px 0 28px; }
+  .lang-btn { padding:6px 16px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--text-dim); font-size:12px; font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.3s; }
+  .lang-btn.active { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
+  .section-label { font-size:10px; text-transform:uppercase; letter-spacing:2.5px; color:var(--text-muted); margin:28px 0 12px 4px; font-weight:600; }
+  .card { display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:10px; cursor:pointer; transition:all 0.3s cubic-bezier(0.25,0.46,0.45,0.94); text-decoration:none; color:var(--text); position:relative; overflow:hidden; }
+  .card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,var(--accent-dim),transparent); opacity:0; transition:opacity 0.3s; }
+  .card:hover,.card:active { border-color:rgba(139,92,246,0.2); transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.3); }
+  .card:hover::before,.card:active::before { opacity:1; }
+  .card-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative; z-index:1; }
+  .card-icon svg { width:22px; height:22px; }
+  .card-content { flex:1; position:relative; z-index:1; }
+  .card-content h3 { font-size:14px; font-weight:600; margin-bottom:2px; }
+  .card-content p { font-size:11.5px; color:var(--text-dim); line-height:1.4; }
+  .card-arrow { color:var(--text-muted); font-size:18px; position:relative; z-index:1; transition:all 0.3s; }
+  .card:hover .card-arrow { color:var(--accent); transform:translateX(3px); }
+  .icon-wechat { background:linear-gradient(135deg,#07c160,#06ad56); }
+  .icon-brochure { background:linear-gradient(135deg,#3b82f6,#2563eb); }
+  .icon-form { background:linear-gradient(135deg,var(--accent),#6d28d9); }
+  .icon-email { background:linear-gradient(135deg,#f59e0b,#d97706); }
+  .icon-phone { background:linear-gradient(135deg,#ec4899,#db2777); }
+  .icon-web { background:linear-gradient(135deg,#06b6d4,#0891b2); }
+  .icon-linkedin { background:linear-gradient(135deg,#0077b5,#005885); }
+  .icon-cert { background:linear-gradient(135deg,#22d3a7,#1a9d7a); }
+  .card-wechat { border-color:rgba(7,193,96,0.2); background:linear-gradient(135deg,rgba(7,193,96,0.08),var(--card)); }
+  .badge { display:inline-block; padding:2px 8px; border-radius:6px; font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-left:6px; vertical-align:middle; }
+  .badge-recommended { background:rgba(139,92,246,0.15); color:var(--accent); }
+  .badge-vpn { background:rgba(239,68,68,0.15); color:var(--danger); }
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(8px); z-index:100; align-items:flex-end; justify-content:center; }
+  .modal-overlay.active { display:flex; animation:fadeIn 0.3s ease; }
+  @keyframes fadeIn { from{opacity:0}to{opacity:1} }
+  .modal { background:var(--card); border-radius:24px 24px 0 0; width:100%; max-width:420px; padding:32px 24px 40px; animation:slideUp 0.4s cubic-bezier(0.25,0.46,0.45,0.94); max-height:85vh; overflow-y:auto; }
+  @keyframes slideUp { from{transform:translateY(100%)}to{transform:translateY(0)} }
+  .modal-handle { width:40px; height:4px; background:var(--text-muted); border-radius:4px; margin:0 auto 24px; }
+  .modal h2 { font-family:'Playfair Display',serif; font-size:22px; margin-bottom:4px; }
+  .modal .modal-sub { font-size:13px; color:var(--text-dim); margin-bottom:24px; }
+  .form-group { margin-bottom:16px; }
+  .form-group label { display:block; font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-dim); margin-bottom:6px; font-weight:500; }
+  .form-group input,.form-group textarea,.form-group select { width:100%; padding:12px 16px; background:var(--bg); border:1px solid var(--border); border-radius:12px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; transition:border-color 0.3s; }
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus { outline:none; border-color:var(--accent); }
+  .form-group textarea { resize:vertical; min-height:80px; }
+  .submit-btn { width:100%; padding:14px; background:linear-gradient(135deg,var(--accent),#6d28d9); border:none; border-radius:12px; color:white; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; margin-top:8px; transition:all 0.3s; }
+  .submit-btn:hover { transform:translateY(-1px); box-shadow:0 8px 24px var(--accent-glow); }
+  .footer { text-align:center; margin-top:36px; padding-top:24px; border-top:1px solid var(--border); }
+  .footer p { font-size:11px; color:var(--text-muted); line-height:1.6; }
+  .fade-up { opacity:0; transform:translateY(20px); animation:fadeUp 0.6s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+  @keyframes fadeUp { to{opacity:1;transform:translateY(0)} }
+  .fade-up:nth-child(1){animation-delay:0.05s}.fade-up:nth-child(2){animation-delay:0.1s}.fade-up:nth-child(3){animation-delay:0.15s}.fade-up:nth-child(4){animation-delay:0.2s}.fade-up:nth-child(5){animation-delay:0.25s}.fade-up:nth-child(6){animation-delay:0.3s}.fade-up:nth-child(7){animation-delay:0.35s}.fade-up:nth-child(8){animation-delay:0.4s}
+  .sector-tags { display:flex; flex-wrap:wrap; gap:8px; padding:4px 0; }
+  .sector-tag { padding:5px 12px; border-radius:20px; font-size:11px; font-weight:500; }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="container">
+  <div class="header fade-up">
+    <div class="avatar">JPG</div>
+    <h1>Juan Pablo González</h1>
+    <div class="role" data-i18n="role">General Manager</div>
+    <div class="company">RevTech · Ingeniería e Innovación</div>
+    <p class="tagline" data-i18n="tagline">Green mining engineering & innovation — sustainable solutions for the mining industry, backed by CEHTA Capital</p>
+  </div>
+
+  <div class="lang-toggle fade-up">
+    <button class="lang-btn active" onclick="setLang('en')">English</button>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn" onclick="setLang('es')">Español</button>
+  </div>
+
+  <div class="section-label fade-up" data-i18n="section-connect">🔗 Connect Instantly</div>
+
+  <a class="card card-wechat fade-up" href="#" onclick="openWeChat()">
+    <div class="card-icon icon-wechat"><svg viewBox="0 0 24 24" fill="white"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm3.825 4.55c-1.467-.098-2.927.306-4.078 1.26-1.186.985-1.911 2.482-1.474 4.163.396 1.52 1.576 2.749 3.044 3.322a7.08 7.08 0 0 0 2.268.462c.661 0 1.31-.107 1.935-.276a.6.6 0 0 1 .49.067l1.3.76a.222.222 0 0 0 .114.037c.11 0 .198-.09.198-.2a.59.59 0 0 0-.033-.145l-.266-1.012a.406.406 0 0 1 .146-.455C19.755 17.746 20.8 16.18 20.8 14.42c0-2.236-2.164-3.878-5.377-3.878zm-1.703 2.1c.44 0 .796.362.796.809a.802.802 0 0 1-.796.808.802.802 0 0 1-.796-.808c0-.447.356-.808.796-.808zm3.994 0c.44 0 .796.362.796.809a.802.802 0 0 1-.796.808.802.802 0 0 1-.796-.808c0-.447.356-.808.796-.808z"/></svg></div>
+    <div class="card-content">
+      <h3>WeChat <span class="badge badge-recommended" data-i18n="badge-rec">Recommended</span></h3>
+      <p data-i18n="wechat-desc">Add on WeChat for direct communication</p>
+    </div>
+    <span class="card-arrow">›</span>
+  </a>
+
+  <a class="card fade-up" href="mailto:jpgonzalez@revtech.cl">
+    <div class="card-icon icon-email"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+    <div class="card-content"><h3>Email</h3><p>jpgonzalez@revtech.cl</p></div>
+    <span class="card-arrow">›</span>
+  </a>
+
+  <a class="card fade-up" href="https://wa.me/56XXXXXXXXX" target="_blank">
+    <div class="card-icon icon-phone"><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.61.609l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 01-5.39-1.584l-.386-.232-2.643.886.886-2.643-.232-.386A9.94 9.94 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg></div>
+    <div class="card-content"><h3>WhatsApp</h3><p data-i18n="whatsapp-desc">Direct message via WhatsApp</p></div>
+    <span class="card-arrow">›</span>
+  </a>
+
+  <div class="section-label fade-up" data-i18n="section-resources">📄 Resources</div>
+
+  <a class="card fade-up" href="#" onclick="downloadBrochure()">
+    <div class="card-icon icon-brochure"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></div>
+    <div class="card-content"><h3 data-i18n="brochure-title">Company Brochure</h3><p data-i18n="brochure-desc">Download RevTech Green Mining overview (PDF)</p></div>
+    <span class="card-arrow">↓</span>
+  </a>
+
+  <a class="card fade-up" href="https://www.revtech.cl" target="_blank">
+    <div class="card-icon icon-web"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+    <div class="card-content"><h3 data-i18n="web-title">Website</h3><p>www.revtech.cl</p></div>
+    <span class="card-arrow">›</span>
+  </a>
+
+  <a class="card fade-up" href="https://www.linkedin.com/in/juanpablogonzalez" target="_blank">
+    <div class="card-icon icon-linkedin"><svg viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+    <div class="card-content"><h3>LinkedIn <span class="badge badge-vpn" data-i18n="badge-vpn">Requires VPN</span></h3><p data-i18n="linkedin-desc">View profile on LinkedIn</p></div>
+    <span class="card-arrow">›</span>
+  </a>
+
+  <a class="card fade-up" href="#" onclick="openModal()">
+    <div class="card-icon icon-form"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <div class="card-content"><h3 data-i18n="form-title">Contact Form</h3><p data-i18n="form-desc">Send a message or business inquiry</p></div>
+    <span class="card-arrow">›</span>
+  </a>
+
+  <div class="section-label fade-up" data-i18n="section-focus">⛏️ Focus Areas</div>
+  <div class="card fade-up" style="cursor:default;">
+    <div class="card-content">
+      <div class="sector-tags">
+        <span class="sector-tag" style="background:var(--accent-dim);color:var(--accent);" data-i18n="tag-mining">Green Mining</span>
+        <span class="sector-tag" style="background:rgba(245,197,66,0.12);color:#f5c542;" data-i18n="tag-engineering">Mining Engineering</span>
+        <span class="sector-tag" style="background:rgba(34,211,167,0.12);color:#22d3a7;" data-i18n="tag-sustainability">Sustainability</span>
+        <span class="sector-tag" style="background:rgba(59,130,246,0.12);color:#60a5fa;" data-i18n="tag-innovation">Process Innovation</span>
+        <span class="sector-tag" style="background:rgba(236,72,153,0.12);color:#f472b6;" data-i18n="tag-water">Water Management</span>
+        <span class="sector-tag" style="background:rgba(6,182,212,0.12);color:#22d3ee;" data-i18n="tag-tailings">Tailings Solutions</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label fade-up" data-i18n="section-credentials">🏆 Credentials</div>
+  <div class="card fade-up" style="cursor:default;">
+    <div class="card-icon icon-cert"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+    <div class="card-content">
+      <h3 data-i18n="cred-title">Backed & Certified</h3>
+      <p data-i18n="cred-desc">CEHTA Capital portfolio company · CORFO-backed · B Corp certified · Green mining innovation leader in Chile</p>
+    </div>
+  </div>
+
+  <div class="footer fade-up">
+    <p data-i18n="footer-text">RevTech — Engineering the future of sustainable mining</p>
+    <p style="font-size:10px;color:var(--text-muted);margin-top:8px;opacity:0.6;">Ingeniería e Innovación SpA · Part of CEHTA Capital portfolio</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="contactModal" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <h2 data-i18n="modal-title">Get in Touch</h2>
+    <p class="modal-sub" data-i18n="modal-sub">We'll respond within 24 hours</p>
+    <div class="form-group"><label data-i18n="label-name">Full Name</label><input type="text" id="formName" placeholder="Zhang Wei"></div>
+    <div class="form-group"><label data-i18n="label-company">Company</label><input type="text" id="formCompany" placeholder="Company name"></div>
+    <div class="form-group"><label data-i18n="label-email">Email</label><input type="email" id="formEmail" placeholder="email@company.com"></div>
+    <div class="form-group"><label data-i18n="label-wechat">WeChat ID (optional)</label><input type="text" id="formWechat" placeholder="Your WeChat ID"></div>
+    <div class="form-group">
+      <label data-i18n="label-interest">Area of Interest</label>
+      <select id="formInterest">
+        <option value="">Select an option</option>
+        <option value="green-mining">Green Mining Solutions</option>
+        <option value="engineering">Mining Engineering</option>
+        <option value="water">Water Treatment / Management</option>
+        <option value="tailings">Tailings Management</option>
+        <option value="innovation">Process Innovation</option>
+        <option value="supply">Equipment / Supply</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group"><label data-i18n="label-message">Message</label><textarea id="formMessage" placeholder="Tell us about your interest or project..."></textarea></div>
+    <button class="submit-btn" onclick="submitForm()" data-i18n="btn-send">Send Message</button>
+  </div>
+</div>
+
+<script>
+const T={
+  en:{'role':'General Manager','tagline':'Green mining engineering & innovation — sustainable solutions for the mining industry, backed by CEHTA Capital','section-connect':'🔗 Connect Instantly','badge-rec':'Recommended','wechat-desc':'Add on WeChat for direct communication','whatsapp-desc':'Direct message via WhatsApp','section-resources':'📄 Resources','brochure-title':'Company Brochure','brochure-desc':'Download RevTech Green Mining overview (PDF)','web-title':'Website','badge-vpn':'Requires VPN','linkedin-desc':'View profile on LinkedIn','form-title':'Contact Form','form-desc':'Send a message or business inquiry','section-focus':'⛏️ Focus Areas','tag-mining':'Green Mining','tag-engineering':'Mining Engineering','tag-sustainability':'Sustainability','tag-innovation':'Process Innovation','tag-water':'Water Management','tag-tailings':'Tailings Solutions','section-credentials':'🏆 Credentials','cred-title':'Backed & Certified','cred-desc':'CEHTA Capital portfolio · CORFO-backed · B Corp certified · Green mining innovation leader','footer-text':'RevTech — Engineering the future of sustainable mining','modal-title':'Get in Touch','modal-sub':'We\'ll respond within 24 hours','label-name':'Full Name','label-company':'Company','label-email':'Email','label-wechat':'WeChat ID (optional)','label-interest':'Area of Interest','label-message':'Message','btn-send':'Send Message'},
+  zh:{'role':'总经理','tagline':'绿色矿业工程与创新——为矿业提供可持续解决方案，由CEHTA Capital支持','section-connect':'🔗 即时联系','badge-rec':'推荐','wechat-desc':'添加微信直接沟通','whatsapp-desc':'通过WhatsApp发送消息','section-resources':'📄 资源文件','brochure-title':'公司简介','brochure-desc':'下载RevTech绿色矿业概览 (PDF)','web-title':'官方网站','badge-vpn':'需要VPN','linkedin-desc':'查看领英主页','form-title':'联系表单','form-desc':'发送消息或商务咨询','section-focus':'⛏️ 业务领域','tag-mining':'绿色矿业','tag-engineering':'矿业工程','tag-sustainability':'可持续发展','tag-innovation':'工艺创新','tag-water':'水资源管理','tag-tailings':'尾矿处理','section-credentials':'🏆 资质认证','cred-title':'有支持且已认证','cred-desc':'CEHTA Capital投资组合 · CORFO支持 · B Corp认证 · 绿色矿业创新领导者','footer-text':'RevTech — 工程引领可持续矿业未来','modal-title':'联系我们','modal-sub':'我们将在24小时内回复','label-name':'姓名','label-company':'公司名称','label-email':'电子邮箱','label-wechat':'微信号（选填）','label-interest':'感兴趣的领域','label-message':'留言','btn-send':'发送消息'},
+  es:{'role':'Gerente General','tagline':'Ingeniería e innovación en minería verde — soluciones sustentables para la industria minera, respaldados por CEHTA Capital','section-connect':'🔗 Conectar','badge-rec':'Recomendado','wechat-desc':'Agréganos en WeChat','whatsapp-desc':'Mensaje por WhatsApp','section-resources':'📄 Recursos','brochure-title':'Brochure','brochure-desc':'Descarga presentación de RevTech (PDF)','web-title':'Sitio Web','badge-vpn':'Requiere VPN','linkedin-desc':'Ver perfil en LinkedIn','form-title':'Formulario','form-desc':'Envía un mensaje o consulta','section-focus':'⛏️ Áreas de Enfoque','tag-mining':'Minería Verde','tag-engineering':'Ingeniería Minera','tag-sustainability':'Sustentabilidad','tag-innovation':'Innovación de Procesos','tag-water':'Gestión de Agua','tag-tailings':'Relaves','section-credentials':'🏆 Credenciales','cred-title':'Respaldado y Certificado','cred-desc':'Portafolio CEHTA Capital · CORFO · B Corp · Líder en innovación minera verde','footer-text':'RevTech — Ingeniería para el futuro de la minería sustentable','modal-title':'Contáctanos','modal-sub':'Responderemos en 24 horas','label-name':'Nombre','label-company':'Empresa','label-email':'Correo','label-wechat':'WeChat ID (opcional)','label-interest':'Área de Interés','label-message':'Mensaje','btn-send':'Enviar'}
+};
+let currentLang='en';
+function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>{b.classList.toggle('active',(l==='en'&&b.textContent==='English')||(l==='zh'&&b.textContent==='中文')||(l==='es'&&b.textContent==='Español'))});document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n');if(T[l][k])e.innerHTML=T[l][k]})}
+function openModal(){document.getElementById('contactModal').classList.add('active');document.body.style.overflow='hidden'}
+function closeModal(e){if(e.target===document.getElementById('contactModal')){document.getElementById('contactModal').classList.remove('active');document.body.style.overflow=''}}
+function openWeChat(){alert('WeChat ID: JP_WECHAT_ID\n\n📱 Scan QR or search this ID in WeChat')}
+function downloadBrochure(){alert('Brochure download coming soon!')}
+function submitForm(){const n=document.getElementById('formName').value,e=document.getElementById('formEmail').value;if(!n||!e){alert(currentLang==='zh'?'请填写姓名和邮箱':currentLang==='es'?'Ingresa nombre y correo':'Please fill name and email');return}const s=`[RevTech - Juan Pablo González] Inquiry from ${n}`;const b=`Name: ${n}\nCompany: ${document.getElementById('formCompany').value}\nEmail: ${e}\nWeChat: ${document.getElementById('formWechat').value}\nInterest: ${document.getElementById('formInterest').value}\nMessage: ${document.getElementById('formMessage').value}`;window.location.href=`mailto:jpgonzalez@revtech.cl?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`}
+</script>
+</body>
+</html>
